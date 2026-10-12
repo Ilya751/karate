@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Настройки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <a class="brand" href="index.html"><span class="brand-mark"></span>КАРАТЕ · ТУРНИРЫ</a>
+  <nav class="nav">
+    <a href="index.html">Турниры</a>
+    <a href="settings.html" class="active">Настройки</a>
+  </nav>
+  <div class="header-spacer"></div>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">Настройки</h1>
+      <div class="page-sub">Эти значения используются при создании категорий и распределении участников</div>
+    </div>
+  </div>
+
+  <div class="settings-layout">
+    <nav class="side-nav" id="sideNav">
+      <a href="#weights" class="on"><svg class="icon"><use href="#i-scale"/></svg>Весовые категории</a>
+      <a href="#timer"><svg class="icon"><use href="#i-timer"/></svg>Бой по умолчанию</a>
+      <a href="#places"><svg class="icon"><use href="#i-building"/></svg>Блоки и татами</a>
+      <a href="#data"><svg class="icon"><use href="#i-download"/></svg>Данные</a>
+    </nav>
+
+    <div>
+      <section class="card panel" id="weights">
+        <div class="panel-head">
+          <div>
+            <h2>Весовые категории</h2>
+            <p>Верхняя граница веса для каждой возрастной группы. Категория «+» включает всех тяжелее последней границы.</p>
+          </div>
+          <button class="btn btn-primary" id="addGroup"><svg class="icon"><use href="#i-plus"/></svg>Возрастная группа</button>
+        </div>
+        <table class="wc-table">
+          <thead>
+            <tr><th style="width:44px">Пол</th><th style="width:250px">Возраст, лет · название</th><th>Веса, кг</th><th style="width:50px"></th></tr>
+          </thead>
+          <tbody id="groups"></tbody>
+        </table>
+      </section>
+
+      <section class="card panel" id="timer">
+        <div class="panel-head">
+          <div><h2>Бой по умолчанию</h2><p>Время подставляется в новые категории. В каждой категории и бою его можно поменять.</p></div>
+        </div>
+        <div class="form-grid" style="grid-template-columns:1fr 1fr">
+          <div class="field"><label>Время боя</label><input class="input mono" id="fightTime" placeholder="2:00"></div>
+          <div class="field"><label>Страна участников, если в Excel её нет</label><input class="input mono" id="country" maxlength="3" style="text-transform:uppercase"></div>
+        </div>
+      </section>
+
+      <section class="card panel" id="places">
+        <div class="panel-head">
+          <div><h2>Блоки и татами</h2><p>Блок — это помещение, в котором стоит одно или несколько татами</p></div>
+          <button class="btn" id="addBlock"><svg class="icon"><use href="#i-plus"/></svg>Блок</button>
+        </div>
+        <div class="block-list" id="blocks"></div>
+      </section>
+
+      <section class="card panel" id="data">
+        <div class="panel-head">
+          <div><h2>Данные</h2><p>Всё хранится в этом браузере на этом компьютере. Делайте резервную копию перед турниром и переносите её на другой компьютер.</p></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="exportBtn"><svg class="icon"><use href="#i-download"/></svg>Скачать резервную копию</button>
+          <button class="btn" id="importBtn"><svg class="icon"><use href="#i-upload"/></svg>Загрузить из копии</button>
+          <input type="file" id="importFile" accept=".json,application/json" hidden>
+          <button class="btn btn-ghost danger-text" id="resetBtn" style="margin-left:auto"><svg class="icon"><use href="#i-trash"/></svg>Удалить все данные</button>
+        </div>
+      </section>
+
+      <div class="save-bar" id="saveBar">
+        <span id="dirtyNote" class="muted"></span>
+        <button class="btn btn-lg" id="cancelBtn">Отменить</button>
+        <button class="btn btn-accent btn-lg" id="saveBtn"><svg class="icon"><use href="#i-check"/></svg>Сохранить</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/core/utils.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/domain/categories.js"></script>
+<script src="js/pages/settings.js"></script>
+<script src="js/core/icons.js"></script>
+</body>
+</html>

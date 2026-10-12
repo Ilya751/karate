@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Табло</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@500;600;700&family=Oswald:wght@500;600;700&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/scoreboard.css">
+</head>
+<body class="ready no-data">
+  <header class="top">
+    <div class="fid" id="fid">—</div>
+    <div class="cat">
+      <span id="round"></span>
+      <b id="cat"></b>
+    </div>
+    <div class="tatami" id="place"></div>
+  </header>
+
+  <main class="arena">
+    <section class="side aka" id="red">
+      <div class="color-tag">Ака · красный</div>
+      <div class="cc" id="redCc"></div>
+      <div class="name" id="redName"></div>
+      <div class="club" id="redClub"></div>
+      <div class="win-banner"><svg class="icon"><use href="#i-trophy"/></svg>Победитель</div>
+    </section>
+    <section class="side shiro" id="white">
+      <div class="color-tag">Сиро · белый</div>
+      <div class="cc" id="whiteCc"></div>
+      <div class="name" id="whiteName"></div>
+      <div class="club" id="whiteClub"></div>
+      <div class="win-banner"><svg class="icon"><use href="#i-trophy"/></svg>Победитель</div>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <div class="state" id="state">готов</div>
+    <div class="timer" id="timer">0:00</div>
+  </footer>
+
+  <div class="waiting"><b id="waitTitle">Табло</b><span>Ждём бой с сайта. Откройте татами и нажмите «Развернуть табло».</span></div>
+
+  <button class="fs" id="fs"><svg class="icon"><use href="#i-maximize"/></svg>Во весь экран <kbd>F</kbd></button>
+
+<script src="js/core/utils.js"></script>
+<script src="js/domain/live.js"></script>
+<script src="js/pages/scoreboard.js"></script>
+<script src="js/core/icons.js"></script>
+</body>
+</html>

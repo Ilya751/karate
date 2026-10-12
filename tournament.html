@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Татами</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="app-fixed">
+
+<header class="app-header">
+  <a class="brand" href="index.html"><span class="brand-mark"></span>КАРАТЕ</a>
+  <div class="crumbs">
+    <a href="index.html">Турниры</a>
+    <svg class="icon icon-sm"><use href="#i-chevron-right"/></svg>
+    <span class="crumb-cut" id="crumbTournament"></span>
+    <svg class="icon icon-sm"><use href="#i-chevron-right"/></svg>
+    <b id="crumbDiscipline"></b>
+  </div>
+  <button class="ctx-pill" id="tatamiBtn">
+    <svg class="icon icon-sm"><use href="#i-building"/></svg><span id="tatamiName"></span>
+    <svg class="icon icon-sm"><use href="#i-chevron-down"/></svg>
+  </button>
+  <div class="header-spacer"></div>
+  <a class="btn btn-sm" id="importBtn"><svg class="icon icon-sm"><use href="#i-upload"/></svg>Импорт участников</a>
+  <a class="btn btn-sm btn-ghost btn-icon" href="settings.html" title="Настройки"><svg class="icon"><use href="#i-settings"/></svg></a>
+</header>
+
+<div class="workspace">
+
+  <!-- ===== Категории ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="row">
+        <h3>Категории</h3>
+        <button class="btn btn-sm btn-icon" title="Новая категория" id="newCatBtn"><svg class="icon icon-sm"><use href="#i-plus"/></svg></button>
+      </div>
+      <div class="input-wrap">
+        <svg class="icon icon-sm"><use href="#i-search"/></svg>
+        <input class="input" id="catSearch" placeholder="Найти категорию">
+      </div>
+    </div>
+    <div class="cat-list" id="catList"></div>
+    <div class="sidebar-foot">
+      <div class="cat-legend">
+        <span><span class="cat-dot live"></span>идёт</span>
+        <span><span class="cat-dot started"></span>начата</span>
+        <span><span class="cat-dot done"></span>завершена</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== Сетка ===== -->
+  <section class="bracket-area">
+    <div class="bracket-toolbar">
+      <div style="min-width:0">
+        <h2 id="catTitle"></h2>
+        <div class="meta" id="catMeta"></div>
+      </div>
+      <div class="spacer"></div>
+      <div class="input-wrap" data-cat-only>
+        <svg class="icon icon-sm"><use href="#i-search"/></svg>
+        <input class="input" id="qName" placeholder="Поиск по имени">
+        <span class="input-count" id="qNameCount"></span>
+      </div>
+      <div class="input-wrap short" data-cat-only>
+        <svg class="icon icon-sm"><use href="#i-hash"/></svg>
+        <input class="input" id="qId" placeholder="ID боя: A7" title="Введите ID боя и нажмите Enter">
+      </div>
+      <button class="btn" id="membersBtn" data-cat-only><svg class="icon icon-sm"><use href="#i-users"/></svg>Участники</button>
+      <button class="btn" id="editBtn" data-cat-only title="Поменять участников местами"><svg class="icon icon-sm"><use href="#i-move"/></svg>Править сетку</button>
+      <button class="btn btn-icon" id="catMenuBtn" data-cat-only title="Ещё"><svg class="icon"><use href="#i-more"/></svg></button>
+    </div>
+
+    <div class="edit-banner" id="editBanner" hidden>
+      <svg class="icon"><use href="#i-move"/></svg>
+      <span>Нажмите на двух участников, чтобы поменять их местами. Менять можно тех, чей бой ещё не проведён.</span>
+      <button class="btn btn-sm btn-accent" id="editDone">Готово</button>
+    </div>
+
+    <div class="bracket-scroll" id="bracketScroll">
+      <div class="round-heads" id="roundHeads"></div>
+      <div class="bracket-canvas" id="bracket"></div>
+    </div>
+
+    <div class="bracket-legend">
+      <span><i class="legend-sw" style="background:var(--aka)"></i>Красный (ака)</span>
+      <span><i class="legend-sw" style="background:#fff;box-shadow:inset 0 0 0 1px var(--shiro-edge)"></i>Белый (сиро)</span>
+      <span><i class="legend-sw" style="background:var(--success-soft);box-shadow:inset 0 0 0 1px #9fd8b8"></i>Победитель</span>
+      <span style="margin-left:auto" class="muted">Наведите на участника, чтобы отметить победителя · Пробел — старт/перерыв · ← → — бои</span>
+    </div>
+  </section>
+
+  <!-- ===== Управление боем ===== -->
+  <aside class="control">
+    <div class="control-sec">
+      <h3>Бой</h3>
+      <div class="switcher">
+        <button class="btn btn-icon" id="prev" title="Предыдущий бой"><svg class="icon icon-lg"><use href="#i-chevron-left"/></svg></button>
+        <label class="switcher-num"><span id="fightLetter">A</span><input id="fightNum" inputmode="numeric" autocomplete="off"></label>
+        <button class="btn btn-icon" id="nextF" title="Следующий бой"><svg class="icon icon-lg"><use href="#i-chevron-right"/></svg></button>
+      </div>
+    </div>
+
+    <div class="control-sec">
+      <h3><span id="roundName"></span><span class="badge badge-live" id="liveBadge" hidden>идёт бой</span></h3>
+      <div class="versus">
+        <div class="vs-card aka" id="redCard">
+          <span class="vs-chip"></span>
+          <div class="vs-info"><div class="vs-name" id="redName">—</div><div class="vs-sub" id="redSub"></div></div>
+          <span class="cc" id="redCc"></span>
+        </div>
+        <div class="vs-sep">VS</div>
+        <div class="vs-card shiro" id="whiteCard">
+          <span class="vs-chip"></span>
+          <div class="vs-info"><div class="vs-name" id="whiteName">—</div><div class="vs-sub" id="whiteSub"></div></div>
+          <span class="cc" id="whiteCc"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-sec">
+      <div class="timer-box" id="timerBox">
+        <div class="lbl"><span>Таймер</span><span id="timerState">готов</span></div>
+        <div class="timer" id="timer">2:00</div>
+        <div class="timer-set" id="presets"></div>
+      </div>
+      <div class="ctrl-btns">
+        <button class="btn btn-start" id="start"><svg class="icon"><use href="#i-play"/></svg>Старт</button>
+        <button class="btn btn-pause" id="pause"><svg class="icon"><use href="#i-pause"/></svg>Перерыв</button>
+        <button class="btn full" id="reset"><svg class="icon icon-sm"><use href="#i-rotate-ccw"/></svg>Сбросить таймер</button>
+      </div>
+    </div>
+
+    <div class="control-sec">
+      <h3>Табло <span class="screen-status" id="screenStatus">не открыто</span></h3>
+      <div class="scoreboard-cta">
+        <svg class="icon icon-lg" style="color:var(--text-2)"><use href="#i-monitor"/></svg>
+        <div class="txt"><b>Отдельное окно для ТВ</b>Перетащите его на второй экран и нажмите F, чтобы развернуть на весь экран</div>
+      </div>
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-top:10px" id="openBoard"><svg class="icon"><use href="#i-maximize"/></svg>Развернуть табло</button>
+    </div>
+
+    <div class="control-sec" style="border-bottom:0">
+      <h3>Следующие бои</h3>
+      <div class="queue" id="queue"></div>
+    </div>
+  </aside>
+</div>
+
+<!-- Новая категория / изменение -->
+<div class="modal-backdrop" id="catModal">
+  <form class="modal" style="width:640px" id="catForm" autocomplete="off">
+    <div class="modal-head">
+      <div><h2 id="catModalTitle">Новая категория</h2><p>Название задаётся вручную, фильтры подбирают участников</p></div>
+      <button type="button" class="btn btn-ghost btn-icon" data-close><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:16px">
+      <div class="field"><label>Название</label><input class="input" name="name" required></div>
+      <div class="form-grid">
+        <div class="field"><label>Дисциплина</label><select class="input" name="discipline"><option value="kumite">Кумите</option><option value="kata">Ката</option></select></div>
+        <div class="field"><label>Пол</label><select class="input" name="sex"><option value="">Любой</option><option value="M">Мужской</option><option value="F">Женский</option></select></div>
+        <div class="field"><label>Возраст</label><select class="input" name="age"></select></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Вес</label><select class="input" name="weight"></select></div>
+        <div class="field"><label>Татами</label><select class="input" name="tatami"></select></div>
+        <div class="field"><label>Время боя</label><input class="input mono" name="time" placeholder="2:00"></div>
+      </div>
+      <div class="note" id="catHint"></div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn" data-close>Отмена</button>
+      <button class="btn btn-accent" type="submit" id="catSubmit"></button>
+    </div>
+  </form>
+</div>
+
+<!-- Участники категории -->
+<div class="modal-backdrop" id="membersModal">
+  <div class="modal" style="width:820px">
+    <div class="modal-head">
+      <div><h2>Участники категории</h2><p id="memTitle"></p></div>
+      <button type="button" class="btn btn-ghost btn-icon" data-close><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body" style="padding-bottom:0">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+        <div class="input-wrap" style="flex:1">
+          <svg class="icon icon-sm"><use href="#i-search"/></svg>
+          <input class="input" id="memSearch" placeholder="Поиск по ФИО или клубу">
+        </div>
+        <div class="segmented" id="memScope">
+          <button class="on" data-scope="match">Подходят</button>
+          <button data-scope="in">В категории</button>
+          <button data-scope="all">Все в турнире</button>
+        </div>
+      </div>
+      <div class="mem-list" id="memList"></div>
+      <form class="add-form" id="addForm" hidden autocomplete="off">
+        <input class="input" name="fio" placeholder="Фамилия Имя">
+        <select class="input" name="sex"><option value="M">М</option><option value="F">Ж</option></select>
+        <input class="input" type="date" name="birth" title="Дата рождения">
+        <input class="input" name="weight" placeholder="Вес, кг">
+        <input class="input" name="club" placeholder="Клуб">
+        <input class="input mono" name="country" placeholder="KAZ" maxlength="3">
+        <button class="btn btn-accent" type="submit"><svg class="icon icon-sm"><use href="#i-check"/></svg>Добавить</button>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <div style="display:flex;gap:12px;align-items:center">
+        <button type="button" class="btn" id="addToggle"><svg class="icon icon-sm"><use href="#i-plus"/></svg>Новый участник</button>
+        <span class="muted" id="memCount"></span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn" data-close>Отмена</button>
+        <button type="button" class="btn btn-accent" id="memSave"><svg class="icon"><use href="#i-check"/></svg>Сохранить и построить сетку</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/core/utils.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/domain/bracket.js"></script>
+<script src="js/domain/categories.js"></script>
+<script src="js/domain/live.js"></script>
+<script src="js/pages/tournament/context.js"></script>
+<script src="js/pages/tournament/sidebar.js"></script>
+<script src="js/pages/tournament/bracket-view.js"></script>
+<script src="js/pages/tournament/control.js"></script>
+<script src="js/pages/tournament/category-modal.js"></script>
+<script src="js/pages/tournament.js"></script>
+<script src="js/core/icons.js"></script>
+</body>
+</html>

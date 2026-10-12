@@ -1,0 +1,70 @@
+/* Табло для второго экрана (ТВ). Размеры в vh/vw, чтобы всё масштабировалось под экран. */
+:root {
+  --bg: #0b0d12;
+  --line: rgba(255,255,255,.08);
+  --aka: #d7192f;
+  --aka-deep: #a3101f;
+  --shiro: #f4f5f7;
+  --gold: #f2c14e;
+  --run: #4ade80;
+  --pause: #fbbf24;
+  --over: #f87171;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: #fff; overflow: hidden; }
+body { font-family: "Golos Text", system-ui, sans-serif; display: grid; grid-template-rows: auto 1fr auto; cursor: default; }
+.icon { width: 1em; height: 1em; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Верхняя полоса: ID боя и категория */
+.top { display: flex; align-items: center; gap: 2.2vw; padding: 2.2vh 3vw; border-bottom: 1px solid var(--line); }
+.fid { font-family: "JetBrains Mono", monospace; font-weight: 800; font-size: 5.2vh; line-height: 1; padding: 1.2vh 1.4vw; border-radius: 1.2vh; background: #fff; color: var(--bg); }
+.cat { display: flex; flex-direction: column; gap: .6vh; min-width: 0; }
+.cat b { font-family: "Oswald", sans-serif; font-weight: 600; font-size: 4.6vh; line-height: 1.05; text-transform: uppercase; letter-spacing: .01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cat span { font-size: 2.4vh; color: #8f98a8; text-transform: uppercase; letter-spacing: .12em; font-weight: 600; }
+.tatami { margin-left: auto; font-size: 2.4vh; color: #8f98a8; text-transform: uppercase; letter-spacing: .12em; font-weight: 600; text-align: right; white-space: nowrap; }
+
+/* Участники */
+.arena { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; }
+.side { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 3vh; padding: 4vh 4vw; overflow: hidden; transition: opacity .4s, filter .4s; }
+.side.aka { background: linear-gradient(160deg, var(--aka) 0%, var(--aka-deep) 100%); }
+.side.shiro { background: var(--shiro); color: #0b0d12; }
+.color-tag { font-size: 2.6vh; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.cc { align-self: flex-start; font-family: "JetBrains Mono", monospace; font-weight: 800; font-size: 7vh; line-height: 1; padding: 1.2vh 1.6vw; border-radius: 1.2vh; letter-spacing: .06em; }
+.aka .cc { background: rgba(0,0,0,.22); }
+.shiro .cc { background: #0b0d12; color: #fff; }
+.name { font-family: "Oswald", sans-serif; font-weight: 600; font-size: 11vh; line-height: .98; text-transform: uppercase; letter-spacing: -.005em; }
+.name small { display: block; font-size: .5em; font-weight: 500; opacity: .85; margin-top: .6vh; }
+.club { font-size: 2.8vh; font-weight: 500; opacity: .7; }
+.shiro.side { align-items: flex-end; text-align: right; }
+.shiro .cc { align-self: flex-end; }
+
+/* Победитель */
+.win-banner { display: none; align-items: center; gap: 1.2vw; align-self: flex-start; font-family: "Oswald", sans-serif; font-weight: 700; font-size: 6vh; text-transform: uppercase; letter-spacing: .06em; padding: 1.4vh 2vw; border-radius: 1.4vh; background: var(--gold); color: #0b0d12; box-shadow: 0 1vh 4vh rgba(0,0,0,.25); }
+.shiro .win-banner { align-self: flex-end; }
+body.has-winner .side.winner .win-banner { display: inline-flex; animation: pop .5s cubic-bezier(.2,1.4,.4,1); }
+body.has-winner .side:not(.winner) { opacity: .28; filter: grayscale(.7); }
+@keyframes pop { from { transform: scale(.6); opacity: 0; } }
+
+/* Таймер */
+.bottom { display: flex; align-items: center; justify-content: center; gap: 3vw; padding: 2vh 3vw 2.6vh; border-top: 1px solid var(--line); position: relative; }
+.timer { font-family: "JetBrains Mono", monospace; font-weight: 800; font-size: 17vh; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.03em; color: #fff; }
+.state { position: absolute; left: 3vw; font-size: 2.6vh; font-weight: 700; text-transform: uppercase; letter-spacing: .16em; color: #8f98a8; display: flex; align-items: center; gap: 1vw; }
+.state::before { content: ""; width: 1.6vh; height: 1.6vh; border-radius: 50%; background: currentColor; }
+body.running .timer, body.running .state { color: var(--run); }
+body.paused .timer, body.paused .state { color: var(--pause); }
+body.paused .state::before { animation: blink 1s infinite; }
+body.over .timer, body.over .state { color: var(--over); }
+body.has-winner .bottom .timer { color: #4b5363; }
+@keyframes blink { 50% { opacity: .2; } }
+
+/* Кнопка полного экрана: видна при наведении, скрыта в полноэкранном режиме */
+.fs { position: fixed; right: 2vw; bottom: 2vh; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.2); background: rgba(11,13,18,.7); color: #fff; font: 600 14px "Golos Text", sans-serif; cursor: pointer; opacity: 0; transition: opacity .2s; backdrop-filter: blur(6px); }
+body:hover .fs { opacity: 1; }
+:fullscreen .fs { display: none; }
+.fs kbd { font-family: "JetBrains Mono", monospace; font-size: 12px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,.15); }
+/* Нет данных с татами */
+.waiting { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2vh; background: var(--bg); color: #8f98a8; font-size: 3vh; text-align: center; z-index: 5; }
+.waiting b { font-family: "Oswald", sans-serif; font-size: 6vh; color: #fff; text-transform: uppercase; letter-spacing: .04em; }
+body.no-data .waiting { display: flex; }
+.side.empty .cc { visibility: hidden; }
+.side.empty .name { opacity: .35; }

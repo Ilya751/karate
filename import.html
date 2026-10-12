@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Импорт участников</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <a class="brand" href="index.html"><span class="brand-mark"></span>КАРАТЕ</a>
+  <div class="crumbs">
+    <a href="index.html">Турниры</a>
+    <svg class="icon icon-sm"><use href="#i-chevron-right"/></svg>
+    <span class="crumb-cut" id="crumbT"></span>
+    <svg class="icon icon-sm"><use href="#i-chevron-right"/></svg>
+    <b>Импорт участников</b>
+  </div>
+  <div class="header-spacer"></div>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">Импорт участников</h1>
+      <div class="page-sub">Загрузите Excel-файл. Участники будут распределены по категориям по полу, возрасту и весу из настроек.</div>
+    </div>
+    <button class="btn" id="templateBtn"><svg class="icon"><use href="#i-download"/></svg>Скачать шаблон .xlsx</button>
+  </div>
+
+  <section class="card panel" id="tPick" hidden>
+    <div class="field" style="max-width:480px"><label>Турнир</label><select class="input" id="tSelect"></select></div>
+  </section>
+
+  <section class="card panel">
+    <label class="dropzone" id="drop">
+      <div class="dropzone-icon"><svg class="icon icon-lg"><use href="#i-sheet"/></svg></div>
+      <div>
+        <h3>Перетащите файл сюда</h3>
+        <p>Формат .xlsx или .xls, первая строка — заголовки. Колонка «Страна» необязательна.</p>
+        <div class="cols-hint" id="colsHint"></div>
+      </div>
+      <span class="btn btn-primary btn-lg"><svg class="icon"><use href="#i-upload"/></svg>Выбрать файл</span>
+      <input type="file" id="file" accept=".xlsx,.xls,.xlsm,.csv" hidden>
+    </label>
+  </section>
+
+  <section class="card panel" id="result" hidden>
+    <div class="panel-head">
+      <div class="file-row" style="flex:1;border:0;padding:0">
+        <div class="dropzone-icon"><svg class="icon"><use href="#i-sheet"/></svg></div>
+        <div><b id="fileName"></b><span id="fileMeta"></span></div>
+        <button class="btn btn-sm btn-ghost" id="clearFile" style="margin-left:auto"><svg class="icon icon-sm"><use href="#i-x"/></svg>Убрать</button>
+      </div>
+    </div>
+    <div class="note warn" id="missing" hidden style="margin-bottom:16px"></div>
+    <div class="summary" id="summary"></div>
+    <div class="segmented" id="rowFilter" style="margin-bottom:12px">
+      <button class="on" data-rf="all">Все строки</button>
+      <button data-rf="warn">С предупреждениями</button>
+      <button data-rf="err">С ошибками</button>
+    </div>
+    <div class="table-wrap" style="max-height:460px">
+      <table class="data-table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="note warn" style="margin-top:16px"><svg class="icon"><use href="#i-alert"/></svg><div>Строки с предупреждениями будут импортированы. Строки с ошибками будут пропущены. Повторы (то же ФИО и дата рождения) не добавятся второй раз.</div></div>
+  </section>
+
+  <div class="import-actions" id="actions" hidden>
+    <label class="check"><input type="checkbox" id="auto" checked>Сразу распределить по категориям кумите и построить первый круг сеток</label>
+    <div style="display:flex;gap:8px">
+      <a class="btn btn-lg" id="cancelBtn">Отмена</a>
+      <button class="btn btn-accent btn-lg" id="importBtn"><svg class="icon"><use href="#i-upload"/></svg><span id="importLabel">Импортировать</span></button>
+    </div>
+  </div>
+</main>
+
+<script src="vendor/xlsx.full.min.js"></script>
+<script src="js/core/utils.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/domain/bracket.js"></script>
+<script src="js/domain/categories.js"></script>
+<script src="js/domain/importer.js"></script>
+<script src="js/pages/import.js"></script>
+<script src="js/core/icons.js"></script>
+</body>
+</html>

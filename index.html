@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Турниры</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <a class="brand" href="index.html"><span class="brand-mark"></span>КАРАТЕ · ТУРНИРЫ</a>
+  <nav class="nav">
+    <a href="index.html" class="active">Турниры</a>
+    <a href="settings.html">Настройки</a>
+  </nav>
+  <div class="header-spacer"></div>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">Турниры</h1>
+      <div class="page-sub">Выберите турнир, чтобы перейти к дисциплинам, татами и сеткам</div>
+    </div>
+    <button class="btn btn-primary btn-lg" id="newBtn"><svg class="icon"><use href="#i-plus"/></svg>Новый турнир</button>
+  </div>
+
+  <div class="toolbar">
+    <div class="input-wrap">
+      <svg class="icon"><use href="#i-search"/></svg>
+      <input class="input" id="search" placeholder="Поиск по названию или городу">
+    </div>
+    <div class="segmented" id="filter">
+      <button class="on" data-f="all">Все</button>
+      <button data-f="live">Идут сейчас</button>
+      <button data-f="soon">Предстоящие</button>
+      <button data-f="done">Завершённые</button>
+    </div>
+  </div>
+
+  <div class="t-grid" id="grid"></div>
+</main>
+
+<!-- Выбор: дисциплина → блок и татами -->
+<div class="modal-backdrop" id="pick">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2 id="pickTitle"></h2>
+        <p id="pickSub"></p>
+      </div>
+      <button class="btn btn-ghost btn-icon" data-close aria-label="Закрыть"><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="steps">
+        <div class="step on" id="st1"><i>1</i>Дисциплина</div>
+        <span class="sep"></span>
+        <div class="step" id="st2"><i>2</i>Блок и татами</div>
+      </div>
+      <div id="step1"><div class="disc-grid" id="discGrid"></div></div>
+      <div id="step2" hidden><div class="block-list" id="blockList"></div></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="back" style="visibility:hidden"><svg class="icon"><use href="#i-arrow-left"/></svg>Назад</button>
+      <div style="display:flex;gap:8px">
+        <a class="btn" id="importLink"><svg class="icon"><use href="#i-upload"/></svg>Импорт участников</a>
+        <button class="btn btn-accent" id="next">Далее<svg class="icon"><use href="#i-chevron-right"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Создание и редактирование турнира -->
+<div class="modal-backdrop" id="tModal">
+  <form class="modal" style="width:640px" id="tForm" autocomplete="off">
+    <div class="modal-head">
+      <div><h2 id="tModalTitle">Новый турнир</h2><p>Участников можно будет загрузить из Excel</p></div>
+      <button type="button" class="btn btn-ghost btn-icon" data-close><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:16px">
+      <div class="field"><label>Название</label><input class="input" name="title" required placeholder="Открытый кубок города по карате"></div>
+      <div class="field"><label>Место проведения</label><input class="input" name="place" placeholder="Город, спортивный комплекс"></div>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr">
+        <div class="field"><label>Дата</label><input class="input" type="date" name="date" required></div>
+        <div class="field"><label>Страна участников по умолчанию</label><input class="input mono" name="country" maxlength="3" placeholder="KAZ" style="text-transform:uppercase"></div>
+      </div>
+      <div class="field">
+        <label>Обложка</label>
+        <div class="cover-pick" id="coverPick"></div>
+        <input type="file" accept="image/*" id="coverFile" hidden>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost danger-text" id="tDelete"><svg class="icon"><use href="#i-trash"/></svg>Удалить турнир</button>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn" data-close>Отмена</button>
+        <button class="btn btn-accent" type="submit"><svg class="icon"><use href="#i-check"/></svg>Сохранить</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script src="js/core/utils.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/domain/bracket.js"></script>
+<script src="js/domain/categories.js"></script>
+<script src="js/domain/live.js"></script>
+<script src="js/domain/demo.js"></script>
+<script src="js/pages/index.js"></script>
+<script src="js/core/icons.js"></script>
+</body>
+</html>
